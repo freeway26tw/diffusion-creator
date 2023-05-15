@@ -33,9 +33,9 @@ const jwtOptions = {
   secretOrKey: process.env.JWT_SECRET
 }
 
-passport.use(new JWTStrategy(jwtOptions, (jwtPayload, cb) => {
+passport.use(new JWTStrategy(jwtOptions, async (jwtPayload, cb) => {
   try {
-    const user = prisma.user.findUnique({
+    const user = await prisma.user.findUnique({
       where: {
         id: jwtPayload.id
       }

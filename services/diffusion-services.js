@@ -9,15 +9,22 @@ const replicate = new Replicate({
 
 const diffusionServices = {
   createDiffusion: async (req, cb) => {
+    console.log(req.user)
     const { description } = req.body
-    const result = await replicate.run(
+    const link = await replicate.run(
       process.env.REPLICATE_PROJECT,
       {
         input: {
           prompt: `${description}`
         }
       })
-    return cb(null, result)
+    const data = {
+      description,
+      link: link[0],
+      authorId: req.user.id
+    }
+    await prisma.diffusion.create({ data })
+    return cb(null, data)
   },
   collectDiffusion: async (req, cb) => {
     const { diffusionId } = req.params
