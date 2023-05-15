@@ -1,21 +1,9 @@
 const express = require('express')
 const router = express.Router()
-const Replicate = require('replicate')
 
-const replicate = new Replicate({
-  auth: process.env.REPLICATE_API_TOKEN,
-});
+const diffusionController = require('../../controllers/diffusion-controller')
 
-router.post('/', async (req, res) => {
-  const { description } = req.body
-  const result = await replicate.run(
-    process.env.REPLICATE_PROJECT,
-    {
-      input: {
-        prompt: `${description}`
-      }
-    })
-  return res.json(result)
-})
+router.post('/', diffusionController.createDiffusion)
+router.post('/:diffusionId/collect', diffusionController.collectDiffusion)
 
 module.exports = router
