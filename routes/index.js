@@ -7,11 +7,12 @@ const users = require('./modules/users')
 
 const userController = require('../controllers/user-controller')
 const { apiErrorHandler } = require('../middleware/error-handler')
+const { authenticated } = require('../middleware/auth')
 
 router.post('/users', userController.signUp)
 router.post('/users/signIn', passport.authenticate('local', { session: false }), userController.signIn)
 
-router.use('/users', users)
+router.use('/users', authenticated, users)
 router.use('/diffusion', diffusion)
 
 router.use('/', apiErrorHandler)
