@@ -9,7 +9,6 @@ const replicate = new Replicate({
 
 const diffusionServices = {
   createDiffusion: async (req, cb) => {
-    console.log(req.user)
     const { description } = req.body
     const link = await replicate.run(
       process.env.REPLICATE_PROJECT,
@@ -27,30 +26,34 @@ const diffusionServices = {
     return cb(null, data)
   },
   collectDiffusion: async (req, cb) => {
-    const { diffusionId } = req.params
-    const diffusion = await prisma.diffusion.findUnique({
-      where: {
-        id: diffusionId
-      }
-    })
-    const collection = await prisma.collection.findFirst({
-      where: {
+    try {
+      const { diffusionId } = req.params
+      const diffusion = await prisma.diffusion.findUnique({
+        where: {
+          id: diffusionId
+        }
+      })
+      const collection = await prisma.collection.findFirst({
+        where: {
+          authorId: req.user.id,
+          diffusionId: diffusion.id
+        }
+      })
+      if (!diffusion) throw (createError(404, "Diffusion doesn't exist!"))
+      if (collection) throw (createError(409, 'You have already collected this diffusion!'))
+      await prisma.collection.create({
+        data: {
+          authorId: req.user.id,
+          diffusionId: diffusion.id
+        }
+      })
+      return cb(null, {
         authorId: req.user.id,
         diffusionId: diffusion.id
-      }
-    })
-    if (!diffusion) throw (createError(404, "Diffusion doesn't exist!"))
-    if (collection) throw (createError(409, 'You have already collected this diffusion!'))
-    prisma.collection.create({
-      data: {
-        authorId: req.user.id,
-        diffusionId: diffusion.id
-      }
-    })
-    return cb(null, {
-      authorId: req.user.id,
-      diffusionId: diffusion.id
-    })
+      })
+    } catch (error) {
+      return cb(error)
+    }
   }
 }
 
