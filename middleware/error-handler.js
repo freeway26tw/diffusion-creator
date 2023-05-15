@@ -1,5 +1,5 @@
 module.exports = {
-  apiErrorHandler(err, req, res, next) {
+  apiErrorHandler(err, req, res, cb) {
     if (err instanceof Error) {
       res.status(err.status || 500).json({
         message: `${err.name}: ${err.message}`
@@ -9,6 +9,6 @@ module.exports = {
         message: `${err}`
       })
     }
-    next(err)
+    cb(err)
   }
 }
