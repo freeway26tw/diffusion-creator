@@ -11,17 +11,27 @@ datasource db {
 }
 
 model User {
-  id         String      @id @default(uuid())
-  account    String      @unique
+  id         String       @id @default(uuid())
+  account    String       @unique
   password   String
-  email      String      @unique
+  email      String       @unique
   diffusions Diffusion[]
+  Collection Collection[]
 }
 
 model Diffusion {
-  id          String @id @default(uuid())
+  id          String       @id @default(uuid())
   description String
   link        String
-  author      User   @relation(fields: [authorId], references: [id])
+  author      User         @relation(fields: [authorId], references: [id])
   authorId    String
+  Collection  Collection[]
+}
+
+model Collection {
+  id          String    @id @default(uuid())
+  author      User      @relation(fields: [authorId], references: [id])
+  authorId    String
+  diffusion   Diffusion @relation(fields: [diffusionId], references: [id])
+  diffusionId String
 }

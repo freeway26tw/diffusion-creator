@@ -13,7 +13,7 @@ router.post('/users', userController.signUp)
 router.post('/users/signIn', passport.authenticate('local', { session: false }), userController.signIn)
 
 router.use('/users', authenticated, users)
-router.use('/diffusion', diffusion)
+router.use('/diffusion', authenticated, diffusion)
 
 router.use('/', apiErrorHandler)
 
