@@ -2,6 +2,8 @@ const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 const createError = require('http-errors')
 const Replicate = require('replicate')
+const { getInfo } = require('../helpers/scraper')
+const { translate } = require('@vitalets/google-translate-api')
 
 const replicate = new Replicate({
   auth: process.env.REPLICATE_API_TOKEN,
@@ -10,11 +12,13 @@ const replicate = new Replicate({
 const diffusionServices = {
   createDiffusion: async (req, cb) => {
     const { description } = req.body
+    const { title, ISBN } = await getInfo(description)
+    const { text } = await translate(title, { to: 'en' })
     const link = await replicate.run(
       process.env.REPLICATE_PROJECT,
       {
         input: {
-          prompt: `${description}`
+          prompt: text
         }
       })
     const data = {

@@ -14,10 +14,10 @@ module.exports.getInfo = async function (description) {
     waitUntil: "domcontentloaded"
   })
 
-  const content = await page.$eval('body > div.container_24.main_wrap.clearfix > div > div:nth-child(6) > div.grid_19.alpha > div:nth-child(1) > div > div.content', (element) => element.textContent)
+  const title = await page.$eval('.type02_p002 h2', (element) => element.textContent)
 
-  const ISBN = await page.$eval('body > div.container_24.main_wrap.clearfix > div > div:nth-child(6) > div.grid_19.alpha > div.mod_b.type02_m058.clearfix > div > ul:nth-child(1) > li:nth-child(1)', (element) => element.textContent)
+  const ISBN = await page.$eval('.bd li', (element) => element.textContent)
   
   await browser.close()
-  return {content, ISBN}
+  return {title, ISBN}
 }
