@@ -11,23 +11,37 @@ const replicate = new Replicate({
 
 const diffusionServices = {
   createDiffusion: async (req, cb) => {
-    const { description } = req.body
-    const { title, ISBN } = await getInfo(description)
-    const { text } = await translate(title, { to: 'en' })
-    const link = await replicate.run(
-      process.env.REPLICATE_PROJECT,
-      {
-        input: {
-          prompt: text
+    try {
+      const { description } = req.body
+      const { title, ISBN, coverImg } = await getInfo(description)
+      const { text } = await translate(title, { to: 'en' })
+      const link = await replicate.run(
+        process.env.REPLICATE_PROJECT,
+        {
+          input: {
+            prompt: text
+          }
+        })
+      const bookData = await prisma.book.create({
+        data: {
+          ISBN,
+          title,
+          coverImg
         }
       })
-    const data = {
-      description,
-      link: link[0],
-      authorId: req.user.id
+
+      const diffusionData = {
+        description,
+        link: link[0],
+        authorId: req.user.id,
+        bookId: bookData.id
+      }
+
+      await prisma.diffusion.create({ data: diffusionData })
+      return cb(null, diffusionData)
+    } catch (error) {
+      return cb(error)
     }
-    await prisma.diffusion.create({ data })
-    return cb(null, data)
   },
   collectDiffusion: async (req, cb) => {
     try {

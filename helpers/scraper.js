@@ -15,9 +15,10 @@ module.exports.getInfo = async function (description) {
   })
 
   const title = await page.$eval('.type02_p002 h2', (element) => element.textContent)
+  let ISBN = await page.$eval('.bd li', (element) => element.textContent)
+  ISBN = ISBN.slice('ISBN：'.length)
+  const coverImg = await page.$eval('#M201106_0_getTakelook_P00a400020052 > img', (element) => element.src)
 
-  const ISBN = await page.$eval('.bd li', (element) => element.textContent)
-  
   await browser.close()
-  return {title, ISBN}
+  return { title, ISBN, coverImg }
 }

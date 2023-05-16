@@ -26,12 +26,13 @@ model Diffusion {
   author      User         @relation(fields: [authorId], references: [id])
   authorId    String
   Collection  Collection[]
-  book        Book         @relation(fields: [ISBN], references: [ISBN])
-  ISBN        String
+  book        Book         @relation(fields: [bookId], references: [id])
+  bookId      String
 }
 
 model Book {
-  ISBN      String      @id
+  id        String      @id @default(uuid())
+  ISBN      String      @unique
   title     String
   coverImg  String
   Diffusion Diffusion[]
