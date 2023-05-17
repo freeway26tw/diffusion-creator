@@ -3,6 +3,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 const express = require('express')
 const session = require('express-session')
+const cors = require('cors')
 const app = express()
 const router = express.Router()
 
@@ -14,6 +15,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 app.use(session({ secret: process.env.SESSION_SECRET || 'secret', resave: false, saveUninitialized: false }))
+app.use(cors())
 app.use(passport.initialize())
 app.use(passport.session())
 
