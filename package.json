@@ -24,7 +24,8 @@
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
     "puppeteer": "^20.2.0",
-    "replicate": "^0.12.1"
+    "replicate": "^0.12.1",
+    "swagger-ui-express": "^4.6.3"
   },
   "devDependencies": {
     "prisma": "^4.14.0"

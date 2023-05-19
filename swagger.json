@@ -1,0 +1,255 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Book Cover Difussion API",
+    "description": "Book cover difussion api document",
+    "version": "0.0.1"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/",
+      "description": "Local server"
+    }
+  ],
+  "paths": {
+    "api/users": {
+      "post": {
+        "summary": "Create new account",
+        "description": "Create new account",
+        "parameters": [
+          {
+            "name": "account",
+            "in": "body",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "email",
+            "in": "body",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "body",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "checkPassword",
+            "in": "body",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Account created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "api/users/signIn": {
+      "post": {
+        "summary": "Sign in",
+        "description": "Sign in",
+        "parameters": [
+          {
+            "name": "account",
+            "in": "body",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "body",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Login successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "api/diffusion": {
+      "post": {
+        "summary": "Create diffusion related to book cover based on keyword",
+        "description": "Create diffusion related to book cover based on keyword",
+        "parameters": [
+          {
+            "name": "description",
+            "in": "body",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Diffusion created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Diffusion"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "api/:diffusionId/collect": {
+      "post": {
+        "summary": "Collect diffusion",
+        "description": "Collect diffusion",
+        "parameters": [
+          {
+            "name": "diffusionId",
+            "in": "parameter",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Diffusion collected successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Diffusion"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "2428160a-9d97-4223-a885-f3a7022ed872"
+          },
+          "account": {
+            "type": "string",
+            "example": "user1"
+          },
+          "password": {
+            "type": "string",
+            "example": "12345678"
+          },
+          "email": {
+            "type": "string",
+            "example": "test@test.com"
+          }
+        },
+        "required": [
+          "account",
+          "password",
+          "email"
+        ]
+      },
+      "Diffusion": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "2428160a-9d97-4223-a885-f3a7022ed872"
+          },
+          "description": {
+            "type": "string"
+          },
+          "link": {
+            "type": "string"
+          },
+          "authorId": {
+            "type": "string"
+          },
+          "bookId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "description",
+          "link",
+          "authorId",
+          "bookId"
+        ]
+      },
+      "Book": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "2428160a-9d97-4223-a885-f3a7022ed872"
+          },
+          "ISBN": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "coverImg": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "ISBN",
+          "title",
+          "coverImg"
+        ]
+      },
+      "Collection": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "2428160a-9d97-4223-a885-f3a7022ed872"
+          },
+          "authorId": {
+            "type": "string"
+          },
+          "diffusionId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "authorId",
+          "diffusionId"
+        ]
+      }
+    }
+  }
+}

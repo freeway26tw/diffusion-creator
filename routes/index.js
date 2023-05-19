@@ -9,11 +9,11 @@ const userController = require('../controllers/user-controller')
 const { apiErrorHandler } = require('../middleware/error-handler')
 const { authenticated } = require('../middleware/auth')
 
-router.post('/users', userController.signUp)
-router.post('/users/signIn', passport.authenticate('local', { session: false }), userController.signIn)
+router.post('/api/users', userController.signUp)
+router.post('/api/users/signIn', passport.authenticate('local', { session: false }), userController.signIn)
 
-router.use('/users', authenticated, users)
-router.use('/diffusion', authenticated, diffusion)
+router.use('/api/users', authenticated, users)
+router.use('/api/diffusion', authenticated, diffusion)
 
 router.use('/', apiErrorHandler)
 
