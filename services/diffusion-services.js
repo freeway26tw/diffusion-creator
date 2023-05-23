@@ -36,8 +36,6 @@ const diffusionServices = {
         authorId: req.user.id,
         bookId: bookData.id
       }
-      console.log(title)
-      console.log(text)
       await prisma.diffusion.create({ data: diffusionData })
       return cb(null, diffusionData)
     } catch (error) {
