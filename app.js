@@ -21,7 +21,7 @@ app.use(cors())
 app.use(passport.initialize())
 app.use(passport.session())
 
-app.use(routes)
+app.use('/api', routes)
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 app.listen(port, () => console.log(`Server is listening on port ${port}!
