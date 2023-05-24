@@ -19,8 +19,9 @@ passport.use(new LocalStrategy(
           account
         }
       })
+      if (!user) return cb(createError(401, 'Account or password invalid'))
       const checkPassword = await bcrypt.compare(password, user.password)
-      if (!user || !checkPassword) return cb(createError(401, 'Account or password invalid'))
+      if (!checkPassword) return cb(createError(401, 'Account or password invalid'))
       return cb(null, user, { message: 'Login successfully!' })
     } catch (error) {
       return cb(error)
