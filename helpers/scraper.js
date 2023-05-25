@@ -3,8 +3,19 @@ const createError = require('http-errors')
 
 module.exports.getInfo = async function (description) {
   try {
-    const browser = await puppeteer.launch()
+    const browser = await puppeteer.launch({
+      headless: true,
+      ignoreDefaultArgs: ["--disable-extensions"],
+      args: [
+        "--no-sandbox",
+        "--use-gl=egl",
+        "--disable-setuid-sandbox",
+      ]
+    })
     const page = await browser.newPage()
+    await page.setUserAgent(
+      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36'
+    )
     const site = `https://search.books.com.tw/search/query/key/${description}/cat/BKA`
     await page.goto(site, {
       waitUntil: "domcontentloaded"
