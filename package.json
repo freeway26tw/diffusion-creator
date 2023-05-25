@@ -4,9 +4,10 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js",
+    "generate": "npx prisma generate",
     "dev": "nodemon app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npm run generate",
+    "start": "npm run build && node build/app.js"
   },
   "keywords": [],
   "author": "",

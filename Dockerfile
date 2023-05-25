@@ -5,6 +5,9 @@ ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
 
 WORKDIR /usr/src/app
 
+# Install Prisma globally
+RUN npm install -g prisma
+
 COPY package*.json ./
 RUN npm ci
 COPY . .
