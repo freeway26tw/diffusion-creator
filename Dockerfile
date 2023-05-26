@@ -14,6 +14,9 @@ FROM node:18
 
 WORKDIR /app
 
+# Install Prisma globally
+RUN npm install -g prisma
+
 COPY package*.json ./
 
 RUN npm install
